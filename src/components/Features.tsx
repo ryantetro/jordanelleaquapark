@@ -1,5 +1,3 @@
-import React from 'react'
-
 export function Features() {
   return (
     <section className="relative w-full pt-20 pb-24 md:pt-24 md:pb-32 bg-gradient-to-b from-brand-light-green/40 via-blue-50/80 to-brand-blue/10 overflow-hidden">

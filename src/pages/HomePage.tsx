@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Card, CardHeader, CardContent } from '../components/ui'
 import { MainLayout } from '../layouts/MainLayout'
 

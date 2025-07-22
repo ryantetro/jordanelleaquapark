@@ -2,11 +2,6 @@ import React, { useState } from 'react'
 import { MainLayout } from '../layouts/MainLayout'
 import { MapPin, Clock, Phone, Mail, ArrowRight, CheckCircle, XCircle } from 'lucide-react'
 
-const BRAND_BLUE = '#3A6BAA'
-const BRAND_LIGHT_BLUE = '#6CA6D9'
-const BRAND_GOLD = '#F7C873'
-const BRAND_DARK = '#181C1B'
-
 interface FormData {
   name: string
   email: string

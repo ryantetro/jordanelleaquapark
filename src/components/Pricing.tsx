@@ -1,5 +1,3 @@
-import React from 'react'
-
 const PRICING = [
   {
     label: '1 Hour',

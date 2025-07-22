@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
 import logo from '../assets/logo.png'
 // Removed: import Link from 'next/link'
@@ -11,13 +11,6 @@ export function Footer() {
     e.preventDefault()
     window.location.href = `mailto:info@jordanelleaquapark.com?subject=Contact from ${encodeURIComponent(contact.name)}&body=${encodeURIComponent(contact.message + '\n\nFrom: ' + contact.name + ' (' + contact.email + ')')}`
   }
-
-  // Logo palette
-  const brandGreen = '#4B6B4A' // top of logo
-  const brandBrown = '#6B5432' // brown stripe
-  const brandBlue = '#3A6BAA' // main blue
-  const brandGold = '#F7C873' // yellow/gold text
-  const brandLightBlue = '#6CA6D9' // wave blue
 
   return (
     <footer className="w-full bg-[#181C1B] text-white pt-12 pb-6 mt-12 border-t-4 border-[#6B5432]">

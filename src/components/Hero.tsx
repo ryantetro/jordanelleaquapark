@@ -1,4 +1,3 @@
-import React from 'react'
 import overview from '../assets/overview.png'
 
 export function Hero() {

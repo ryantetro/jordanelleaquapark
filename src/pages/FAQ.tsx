@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { MainLayout } from '../layouts/MainLayout'
 import { PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 

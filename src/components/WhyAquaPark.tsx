@@ -1,6 +1,3 @@
-import React from 'react'
-import kidsHorizontal from '../assets/kidsHorizontal.PNG'
-import kidJumping from '../assets/kidJumping.PNG'
 import kidsOverview from '../assets/kidsOverview.jpg'
 
 // Professional SVG icons for benefits
@@ -99,11 +96,11 @@ export function WhyAquaPark() {
           <div className="grid grid-cols-2 grid-rows-2 gap-6 md:gap-8">
             {/* Large image */}
             <div className="row-span-2 aspect-[3/4] w-full max-h-[420px] overflow-hidden rounded-[24px] shadow-lg">
-              <img src={kidsHorizontal} alt="Kids enjoying Jordanelle Aqua Park" className="object-cover w-full h-full rounded-[24px]" />
+              <img src={kidsOverview} alt="Kids enjoying Jordanelle Aqua Park" className="object-cover w-full h-full rounded-[24px]" />
             </div>
             {/* Medium image */}
             <div className="rounded-[24px] shadow-lg overflow-hidden relative group">
-              <img src={kidJumping} alt="Kid jumping at Jordanelle Aqua Park" className="object-cover w-full h-36 md:h-52 rounded-[24px] shadow-lg transition-transform duration-400 hover:scale-105" />
+              <img src={kidsOverview} alt="Kid jumping at Jordanelle Aqua Park" className="object-cover w-full h-36 md:h-52 rounded-[24px] shadow-lg transition-transform duration-400 hover:scale-105" />
             </div>
             {/* Small image */}
             <div className="rounded-[24px] shadow-lg overflow-hidden relative group">
