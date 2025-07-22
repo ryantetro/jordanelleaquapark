@@ -1,7 +1,5 @@
 import { MainLayout } from './layouts/MainLayout'
 import { Hero } from './components/Hero'
-import { About } from './components/About'
-import { Features } from './components/Features'
 import { HowToBook } from './components/HowToBook'
 import { WhyAquaPark } from './components/WhyAquaPark'
 import Pricing from './components/Pricing'

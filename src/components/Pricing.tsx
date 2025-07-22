@@ -64,7 +64,7 @@ export default function Pricing() {
 
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-3 md:gap-5 max-w-2xl md:max-w-4xl mx-auto">
-          {PRICING.map((tier, i) => (
+          {PRICING.map((tier) => (
             <div
               key={tier.label}
               className={`relative bg-white/80 backdrop-blur-sm border rounded-2xl p-2 md:p-4 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group
@@ -104,7 +104,7 @@ export default function Pricing() {
               {/* Features */}
               <div className="flex-grow mb-5">
                 <ul className="space-y-2">
-                  {tier.features.map((feature, idx) => (
+                  {tier.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
                       <div className={`flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5
                         ${tier.tag === 'Best Value' 
