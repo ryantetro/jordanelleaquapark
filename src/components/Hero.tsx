@@ -2,7 +2,7 @@ import overview from '../assets/overview.png'
 
 export function Hero() {
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen w-full flex items-center justify-center">
       <img
         src={overview}
         alt="Aerial view of Jordanelle Aqua Park and lake"

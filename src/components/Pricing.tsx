@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+
 const PRICING = [
   {
     label: '1 Hour',
@@ -35,8 +37,26 @@ const PRICING = [
 ]
 
 export default function Pricing() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // On mobile, scroll to center the middle card (2 Hours)
+    const handleResize = () => {
+      if (window.innerWidth < 768 && scrollContainerRef.current) {
+        const container = scrollContainerRef.current
+        const cardWidth = 280 + 16 // card width + gap
+        const scrollPosition = cardWidth // Scroll to show the middle card
+        container.scrollLeft = scrollPosition
+      }
+    }
+
+    handleResize() // Initial call
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
-    <section className='relative w-full bg-gradient-to-br from-slate-50 to-blue-50/30 py-10 md:py-24 px-2 sm:px-4 overflow-hidden' id="pricing">
+    <section className='relative w-full bg-gradient-to-br from-slate-50 to-blue-50/30 py-12 md:py-20 px-2 sm:px-4' id="pricing">
       {/* Background decoration */}
       <div className="absolute inset-0 pricing-bg"></div>
       <div className="relative max-w-6xl mx-auto">
@@ -63,86 +83,93 @@ export default function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-3 md:gap-5 max-w-2xl md:max-w-4xl mx-auto">
-          {PRICING.map((tier) => (
-            <div
-              key={tier.label}
-              className={`relative bg-white/80 backdrop-blur-sm border rounded-2xl p-2 md:p-4 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group
-                ${tier.tag === 'Best Value' 
-                  ? 'border-amber-200 shadow-xl shadow-amber-100/50 ring-2 ring-amber-200/50 md:scale-105' 
-                  : tier.tag === 'Most Popular' 
-                  ? 'border-blue-200 shadow-lg shadow-blue-100/50 ring-1 ring-blue-200/30' 
-                  : 'border-slate-200 shadow-md hover:border-blue-200'
-                }
-              `}
-            >
-              {/* Popular Badge */}
-              {tier.tag && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <div className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg
-                    ${tier.tag === 'Best Value' 
-                      ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white' 
-                      : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                    }`}
-                  >
-                    {tier.tag}
-                  </div>
-                </div>
-              )}
-
-              {/* Header */}
-              <div className="text-center mb-5 pt-2">
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{tier.label}</h3>
-                <div className="flex items-baseline justify-center mb-1">
-                  <span className="text-3xl font-black bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                    ${tier.price}
-                  </span>
-                </div>
-                <p className="text-slate-500 text-xs">per person</p>
-              </div>
-
-              {/* Features */}
-              <div className="flex-grow mb-5">
-                <ul className="space-y-2">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <div className={`flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5
-                        ${tier.tag === 'Best Value' 
-                          ? 'bg-amber-100 text-amber-600' 
-                          : 'bg-blue-100 text-blue-600'
-                        }`}
-                      >
-                        <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-slate-700 text-sm font-medium leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* CTA Button */}
-              <a
-                href="#booking"
-                className={`w-full text-center font-bold py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-sm
-                  ${tier.tag === 'Best Value'
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-amber-200'
-                    : tier.tag === 'Most Popular'
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 shadow-blue-200'
-                    : 'bg-slate-900 text-white hover:bg-slate-800 shadow-slate-300'
+        <div ref={scrollContainerRef} className="flex md:grid md:grid-cols-3 gap-x-4 md:gap-x-5 px-4 md:px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory max-w-full mx-auto scroll-smooth">
+          {/* Mobile centering: Add padding to center the middle card */}
+          <div className="flex md:contents gap-x-4 md:gap-x-5">
+            <div className="md:hidden w-[calc(50vw-140px)] flex-shrink-0"></div>
+            {PRICING.map((tier) => (
+              <div
+                key={tier.label}
+                className={`relative bg-white/80 backdrop-blur-sm border rounded-xl p-3 md:p-4 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group mt-8
+                  hover:z-30
+                  min-w-[280px] max-w-[320px] snap-center md:min-w-0 md:max-w-none flex-shrink-0 md:flex-shrink
+                  ${tier.tag === 'Best Value' 
+                    ? 'border-amber-200 shadow-xl shadow-amber-100/50 ring-2 ring-amber-200/50' 
+                    : tier.tag === 'Most Popular' 
+                    ? 'border-blue-200 shadow-lg shadow-blue-100/50 ring-1 ring-blue-200/30' 
+                    : 'border-slate-200 shadow-md hover:border-blue-200'
                   }
                 `}
               >
-                <span className="flex items-center justify-center gap-2">
-                  Book {tier.label}
-                  <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </a>
-            </div>
-          ))}
+                {/* Popular Badge */}
+                {tier.tag && (
+                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-20">
+                    <div className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg
+                      ${tier.tag === 'Best Value' 
+                        ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white' 
+                        : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                      }`}
+                    >
+                      {tier.tag}
+                    </div>
+                  </div>
+                )}
+
+                {/* Header */}
+                <div className="text-center mb-3 pt-3 md:pt-1">
+                  <h3 className="text-base md:text-lg font-bold text-slate-900 mb-1">{tier.label}</h3>
+                  <div className="flex items-baseline justify-center mb-0.5">
+                    <span className="text-2xl md:text-3xl font-black bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                      ${tier.price}
+                    </span>
+                  </div>
+                  <p className="text-slate-500 text-[11px] md:text-xs">per person</p>
+                </div>
+
+                {/* Features */}
+                <div className="flex-grow mb-3">
+                  <ul className="space-y-1 md:space-y-2">
+                    {tier.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <div className={`flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5
+                          ${tier.tag === 'Best Value' 
+                            ? 'bg-amber-100 text-amber-600' 
+                            : 'bg-blue-100 text-blue-600'
+                          }`}
+                        >
+                          <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <span className="text-slate-700 text-xs md:text-sm font-medium leading-relaxed">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA Button */}
+                <a
+                  href="#booking"
+                  className={`w-full text-center font-bold py-2 rounded-lg md:py-2.5 md:rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-xs md:text-sm
+                    ${tier.tag === 'Best Value'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-amber-200'
+                      : tier.tag === 'Most Popular'
+                      ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 shadow-blue-200'
+                      : 'bg-slate-900 text-white hover:bg-slate-800 shadow-slate-300'
+                    }
+                  `}
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    Book {tier.label}
+                    <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            ))}
+            <div className="md:hidden w-[calc(50vw-140px)] flex-shrink-0"></div>
+          </div>
         </div>
 
         {/* Bottom text */}
