@@ -142,11 +142,14 @@ export function Header({ className }: HeaderProps = {}) {
 
   // Dynamic background based on page
   const getBackground = () => {
+    if (menuOpen) {
+      return 'bg-white'
+    }
     if (isHero) {
       return 'bg-transparent'
     }
     if (isOnLightBackground) {
-      return 'backdrop-blur-sm bg-white/80'
+      return 'bg-white'
     }
     return `backdrop-blur-md bg-[${JORDANELLE_BLUE}]/95`
   }
@@ -252,7 +255,7 @@ export function Header({ className }: HeaderProps = {}) {
             aria-label="Close menu backdrop"
           />
           {/* Centered popup-style menu panel */}
-          <div className={`relative w-full max-w-md mx-auto bg-white rounded-2xl shadow-2xl pb-6 pt-4 px-6 flex flex-col items-center ${isAnimatingOut ? 'animate-popupOut' : 'animate-popupIn'}`}>
+          <div className={`relative w-full max-w-md mx-auto bg-[#1B4F8C] rounded-2xl shadow-2xl pb-6 pt-4 px-6 flex flex-col items-center ${isAnimatingOut ? 'animate-popupOut' : 'animate-popupIn'}`}>
             {/* Logo and close button */}
             <div className="w-full flex items-center justify-between mb-6">
               <img src={logo} alt="Jordanelle Aqua Park Logo" className="h-16 w-16 rounded-md" />
@@ -274,7 +277,7 @@ export function Header({ className }: HeaderProps = {}) {
                     <Link
                       to={link.isAnchor ? '/' : link.to}
                       onClick={handleNavClick(link)}
-                      className="text-xl text-brand-blue font-semibold hover:text-brand-gold transition-colors duration-150 py-3 block rounded-xl hover:bg-brand-gold/10"
+                      className="text-xl text-white font-semibold hover:text-[#F7C873] transition-colors duration-150 py-3 block rounded-xl hover:bg-[#F7C873]/10"
                     >
                       {link.name}
                     </Link>
@@ -301,7 +304,7 @@ export function Header({ className }: HeaderProps = {}) {
                   window.open(e.currentTarget.href, '_blank')
                 }
               }}
-              className="mt-6 bg-brand-gold text-brand-blue font-bold px-6 py-3 rounded-xl shadow-lg text-lg hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-colors duration-150 w-full text-center"
+              className="mt-6 bg-[#F7C873] text-[#1B4F8C] font-semibold px-4 py-2 rounded-lg shadow-sm text-sm hover:bg-white hover:text-[#1B4F8C] transition-all duration-300 inline-flex items-center gap-1 w-full text-center justify-center"
             >
               Book Now
             </Link>
