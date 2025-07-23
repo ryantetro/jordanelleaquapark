@@ -1,18 +1,44 @@
 import { useState, useEffect } from 'react'
-import logo from '../assets/logo.png'
 import { Link } from 'react-router-dom'
+import logo from '../assets/logo.png'
+
+// Declare FareHarbor types
+declare global {
+  interface Window {
+    FH?: {
+      open: (options: {
+        shortname: string
+        fallback: string
+        fullItems: string
+        flow: number
+        view: { item: number }
+      }) => void
+    }
+  }
+}
 
 interface HeaderProps {
   className?: string
 }
 
+// Smooth scroll function
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
+}
+
 const navLinks = [
-  { name: 'Home', to: '/' },
-  { name: 'About', to: '/#about' },
-  { name: 'Activities', to: '/#activities' },
-  { name: 'Booking', to: '/#booking' },
-  { name: 'FAQ', to: '/FAQ' },
-  { name: 'Contact', to: '/contact' },
+  { name: 'Home', to: '/', isAnchor: false },
+  // { name: 'About', to: 'about', isAnchor: true },
+  { name: 'How to Book', to: 'booking', isAnchor: true },
+  { name: 'Pricing', to: 'pricing', isAnchor: true },
+  { name: 'FAQ', to: '/FAQ', isAnchor: false },
+  { name: 'Contact', to: '/contact', isAnchor: false },
 ]
 
 export function Header({ className }: HeaderProps = {}) {
@@ -21,10 +47,26 @@ export function Header({ className }: HeaderProps = {}) {
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isCompact, setIsCompact] = useState(false)
+  const [isOnLightBackground, setIsOnLightBackground] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
+      
+      // Check if we're on a page with a light background
+      const path = window.location.pathname
+      const lightBackgroundPages = ['/FAQ', '/contact']
+      const isLightPage = lightBackgroundPages.includes(path)
+      
+      // For home page, check scroll position to determine background
+      if (path === '/' || path === '') {
+        // On home page, check if we're over light sections
+        const isOverLightSection = currentScrollY > 400 // Adjust this value based on when pricing section starts
+        setIsOnLightBackground(isOverLightSection)
+      } else {
+        setIsOnLightBackground(isLightPage)
+      }
+      
       if (currentScrollY < 10) {
         setIsVisible(true)
         setIsCompact(false)
@@ -42,6 +84,22 @@ export function Header({ className }: HeaderProps = {}) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
+  useEffect(() => {
+    const checkBackground = () => {
+      // Check if we're on a page with a light background
+      const path = window.location.pathname
+      const lightBackgroundPages = ['/FAQ', '/contact']
+      const isLightPage = lightBackgroundPages.includes(path)
+      setIsOnLightBackground(isLightPage)
+    }
+
+    checkBackground()
+    // Listen for route changes
+    const handleRouteChange = () => checkBackground()
+    window.addEventListener('popstate', handleRouteChange)
+    return () => window.removeEventListener('popstate', handleRouteChange)
+  }, [])
+
   const closeMenu = () => {
     setIsAnimatingOut(true)
     setTimeout(() => {
@@ -50,27 +108,43 @@ export function Header({ className }: HeaderProps = {}) {
     }, 500)
   }
 
+  // Dynamic text color based on background
+  const getTextColor = () => {
+    if (isOnLightBackground) {
+      return 'text-[#013A63]' // Dark blue for light backgrounds
+    }
+    return 'text-white' // White for dark backgrounds (like hero image)
+  }
+
+  // Dynamic background based on page
+  const getBackground = () => {
+    if (isOnLightBackground) {
+      return 'backdrop-blur-sm bg-white/80' // Light background for light pages
+    }
+    return 'backdrop-blur-md bg-black/20' // Dark background for dark pages
+  }
+
   // Always keep animation/visibility classes, but allow FAQ to override bg/text/shadow
-  const baseHeaderClasses = `fixed top-0 left-0 w-full z-30 transition-all duration-300 border-b border-[#232A2B] ${
+  const baseHeaderClasses = `fixed top-0 left-0 w-full z-30 transition-all duration-300 ${getBackground()} ${
     isVisible ? 'translate-y-0' : '-translate-y-full'
   }`
-  const mergedClassName = `${baseHeaderClasses} ${className ? className : 'bg-[#181C1B] text-white'}`
+  const mergedClassName = `${baseHeaderClasses} ${className ? className : getTextColor()}`
 
   return (
     <header className={mergedClassName}>
       <div className={`max-w-7xl mx-auto flex items-center justify-between px-6 transition-all duration-300 ${
-        isCompact ? 'py-2 md:py-4' : 'py-4'
+        isCompact ? 'py-1 md:py-2' : 'py-2'
       }`}>
-        <Link to="/" className="flex items-center space-x-3 group">
+        <Link to="/" className="flex items-center space-x-2 group">
           <img
             src={logo}
             alt="Jordanelle Aqua Park Logo"
             className={`rounded-md transition-all duration-300 group-hover:scale-105 ${
-              isCompact ? 'h-10 w-10 md:h-16 md:w-16' : 'h-16 w-16'
+              isCompact ? 'h-10 w-10 md:h-12 md:w-12' : 'h-14 w-14 md:h-12 md:w-12'
             }`}
           />
-          <span className={`font-bold text-brand-gold tracking-wide drop-shadow-sm transition-all duration-300 ${
-            isCompact ? 'text-lg md:text-2xl' : 'text-2xl'
+          <span className={`font-bold text-brand-gold tracking-wide drop-shadow-lg transition-all duration-300 ${
+            isCompact ? 'text-base md:text-xl' : 'text-lg md:text-xl'
           }`}>
             <span className={isCompact ? 'hidden sm:inline' : ''}>Jordanelle Aqua Park</span>
             <span className={isCompact ? 'sm:hidden' : 'hidden'}>Jordanelle</span>
@@ -78,12 +152,18 @@ export function Header({ className }: HeaderProps = {}) {
         </Link>
         {/* Desktop Nav */}
         <nav className="hidden md:block">
-          <ul className="flex space-x-8">
+          <ul className="flex space-x-6">
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
                   to={link.to}
-                  className="text-white font-medium hover:text-brand-gold transition-colors duration-150 px-2 py-1 rounded"
+                  onClick={(e) => {
+                    if (link.isAnchor) {
+                      e.preventDefault()
+                      scrollToSection(link.to)
+                    }
+                  }}
+                  className={`${getTextColor()} font-semibold hover:text-brand-gold transition-colors duration-150 px-3 py-2 rounded-lg drop-shadow-lg text-[14px] hover:bg-white/10`}
                 >
                   {link.name}
                 </Link>
@@ -92,23 +172,38 @@ export function Header({ className }: HeaderProps = {}) {
           </ul>
         </nav>
         <Link
-          to="/#booking"
-          className={`ml-6 bg-brand-gold text-brand-blue font-bold rounded shadow hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-all duration-300 hidden md:inline-block ${
-            isCompact ? 'px-3 py-1 text-sm' : 'px-5 py-2'
+          to="https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956"
+          onClick={(e) => {
+            e.preventDefault()
+            if (window.FH) {
+              window.FH.open({ 
+                shortname: 'jordanellerentals', 
+                fallback: 'simple', 
+                fullItems: 'yes', 
+                flow: 1442956, 
+                view: { item: 638160 } 
+              })
+            } else {
+              // Fallback to direct link if FH is not loaded
+              window.open(e.currentTarget.href, '_blank')
+            }
+          }}
+          className={`ml-4 bg-brand-gold text-brand-blue font-bold rounded-lg shadow-lg hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-all duration-300 hidden md:inline-block drop-shadow-lg ${
+            isCompact ? 'px-2 py-1 text-xs' : 'px-4 py-2 text-sm'
           }`}
         >
           Book Now
         </Link>
         {/* Hamburger Icon for Mobile */}
         <button
-          className={`md:hidden flex items-center justify-center rounded focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all duration-300 ${
-            isCompact ? 'p-1' : 'p-2'
+          className={`md:hidden flex items-center justify-center rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all duration-300 ${
+            isCompact ? 'p-1' : 'p-1'
           }`}
           aria-label="Open menu"
           onClick={() => setMenuOpen(true)}
         >
-          <svg className={`text-brand-gold transition-all duration-300 ${
-            isCompact ? 'w-6 h-6' : 'w-8 h-8'
+          <svg className={`text-brand-gold transition-all duration-300 drop-shadow-lg ${
+            isCompact ? 'w-5 h-5' : 'w-6 h-6'
           }`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -116,20 +211,20 @@ export function Header({ className }: HeaderProps = {}) {
       </div>
       {/* Modern Mobile Menu Overlay with smooth close transition */}
       {menuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col md:hidden">
+        <div className="fixed inset-0 z-50 flex items-start justify-center md:hidden p-4 pt-20">
           {/* Blurred dark backdrop */}
           <div
             className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300 ${isAnimatingOut ? 'opacity-0' : 'opacity-100'}`}
             onClick={closeMenu}
             aria-label="Close menu backdrop"
           />
-          {/* Slide-up/down menu panel */}
-          <div className={`relative mt-auto w-full rounded-t-3xl bg-white shadow-2xl pb-8 pt-6 px-6 flex flex-col items-center ${isAnimatingOut ? 'animate-slideDown' : 'animate-slideUp'}`}>
+          {/* Centered popup-style menu panel */}
+          <div className={`relative w-full max-w-md mx-auto bg-white rounded-2xl shadow-2xl pb-6 pt-4 px-6 flex flex-col items-center ${isAnimatingOut ? 'animate-popupOut' : 'animate-popupIn'}`}>
             {/* Logo and close button */}
             <div className="w-full flex items-center justify-between mb-6">
-              <img src={logo} alt="Jordanelle Aqua Park Logo" className="h-12 w-12 rounded-md" />
+              <img src={logo} alt="Jordanelle Aqua Park Logo" className="h-16 w-16 rounded-md" />
               <button
-                className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                className="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-gold hover:bg-gray-100 transition-colors"
                 aria-label="Close menu"
                 onClick={closeMenu}
               >
@@ -139,14 +234,20 @@ export function Header({ className }: HeaderProps = {}) {
               </button>
             </div>
             {/* Nav links */}
-            <nav className="w-full flex-1">
-              <ul className="flex flex-col space-y-6 text-center">
+            <nav className="w-full">
+              <ul className="flex flex-col space-y-4 text-center">
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link
                       to={link.to}
-                      className="text-2xl text-brand-blue font-semibold hover:text-brand-gold transition-colors duration-150 py-2 block rounded-lg hover:bg-brand-gold/10"
-                      onClick={closeMenu}
+                      onClick={(e) => {
+                        if (link.isAnchor) {
+                          e.preventDefault()
+                          scrollToSection(link.to)
+                        }
+                        closeMenu()
+                      }}
+                      className="text-xl text-brand-blue font-semibold hover:text-brand-gold transition-colors duration-150 py-3 block rounded-xl hover:bg-brand-gold/10"
                     >
                       {link.name}
                     </Link>
@@ -154,29 +255,44 @@ export function Header({ className }: HeaderProps = {}) {
                 ))}
               </ul>
             </nav>
-            {/* Sticky Book Now button */}
+            {/* Book Now button */}
             <Link
-              to="/#booking"
-              className="mt-8 bg-brand-gold text-brand-blue font-bold px-8 py-4 rounded-xl shadow-lg text-xl hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-colors duration-150 w-full text-center sticky bottom-4"
-              onClick={closeMenu}
+              to="https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956"
+              onClick={(e) => {
+                e.preventDefault()
+                closeMenu()
+                if (window.FH) {
+                  window.FH.open({ 
+                    shortname: 'jordanellerentals', 
+                    fallback: 'simple', 
+                    fullItems: 'yes', 
+                    flow: 1442956, 
+                    view: { item: 638160 } 
+                  })
+                } else {
+                  // Fallback to direct link if FH is not loaded
+                  window.open(e.currentTarget.href, '_blank')
+                }
+              }}
+              className="mt-6 bg-brand-gold text-brand-blue font-bold px-6 py-3 rounded-xl shadow-lg text-lg hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-colors duration-150 w-full text-center"
             >
               Book Now
             </Link>
           </div>
           <style>{`
-            @keyframes slideUp {
-              0% { transform: translateY(100%); opacity: 0; }
-              100% { transform: translateY(0); opacity: 1; }
+            @keyframes popupIn {
+              0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+              100% { transform: scale(1) translateY(0); opacity: 1; }
             }
-            @keyframes slideDown {
-              0% { transform: translateY(0); opacity: 1; }
-              100% { transform: translateY(100%); opacity: 0; }
+            @keyframes popupOut {
+              0% { transform: scale(1) translateY(0); opacity: 1; }
+              100% { transform: scale(0.8) translateY(20px); opacity: 0; }
             }
-            .animate-slideUp {
-              animation: slideUp 0.5s cubic-bezier(0.4,0,0.2,1) both;
+            .animate-popupIn {
+              animation: popupIn 0.3s cubic-bezier(0.4,0,0.2,1) both;
             }
-            .animate-slideDown {
-              animation: slideDown 0.5s cubic-bezier(0.4,0,0.2,1) both;
+            .animate-popupOut {
+              animation: popupOut 0.3s cubic-bezier(0.4,0,0.2,1) both;
             }
           `}</style>
         </div>

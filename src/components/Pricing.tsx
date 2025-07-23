@@ -1,5 +1,20 @@
 import { useEffect, useRef } from 'react'
 
+// Declare FareHarbor types
+declare global {
+  interface Window {
+    FH?: {
+      open: (options: {
+        shortname: string
+        fallback: string
+        fullItems: string
+        flow: number
+        view: { item: number }
+      }) => void
+    }
+  }
+}
+
 const PRICING = [
   {
     label: '1 Hour',
@@ -19,7 +34,6 @@ const PRICING = [
       'Full park access',
       'Life jacket included',
       'All ages 6+',
-      'Save $15 vs. 2x 1hr',
     ],
   },
   {
@@ -31,7 +45,6 @@ const PRICING = [
       'Life jacket included',
       'All ages 6+',
       'Come & go all day',
-      'Save $85 vs. 6x 1hr',
     ],
   },
 ]
@@ -56,43 +69,37 @@ export default function Pricing() {
   }, [])
 
   return (
-    <section className='relative w-full bg-gradient-to-br from-slate-50 to-blue-50/30 py-12 md:py-20 px-2 sm:px-4' id="pricing">
+    <section className='relative w-full bg-gradient-to-br from-slate-50 to-blue-50/30 py-8 md:py-16 px-2 sm:px-4' id="pricing">
       {/* Background decoration */}
       <div className="absolute inset-0 pricing-bg"></div>
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-16">
-          {/* <div className="inline-flex items-center gap-2 bg-blue-600/10 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            Simple Transparent Pricing
-          </div> */}
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+        <div className="text-center mb-6 md:mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 leading-tight">
             Choose Your
             <span className="block bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Adventure
             </span>
           </h2>
-          <div className="space-y-2 mb-6">
-            <p className="text-blue-600 font-semibold text-lg">80 feet x 110 feet • 23 separate obstacles</p>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+          <div className="space-y-1 mb-4">
+            <p className="text-blue-600 font-semibold text-[16px]">80 feet x 110 feet • 23 separate obstacles</p>
+            <p className="text-slate-600 text-[15px] max-w-2xl mx-auto leading-relaxed">
               All sessions include full access to the entire floating park, life jacket, and unlimited fun.
             </p>
           </div>
         </div>
 
         {/* Pricing Cards */}
-        <div ref={scrollContainerRef} className="flex md:grid md:grid-cols-3 gap-x-4 md:gap-x-5 px-4 md:px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory max-w-full mx-auto scroll-smooth">
+        <div ref={scrollContainerRef} className="flex md:grid md:grid-cols-3 gap-x-3 md:gap-x-4 px-4 md:px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory max-w-full mx-auto scroll-smooth">
           {/* Mobile centering: Add padding to center the middle card */}
-          <div className="flex md:contents gap-x-4 md:gap-x-5">
+          <div className="flex md:contents gap-x-3 md:gap-x-4">
             <div className="md:hidden w-[calc(50vw-140px)] flex-shrink-0"></div>
             {PRICING.map((tier) => (
               <div
                 key={tier.label}
-                className={`relative bg-white/80 backdrop-blur-sm border rounded-xl p-3 md:p-4 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group mt-8
+                className={`relative bg-white/80 backdrop-blur-sm border rounded-xl p-3 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group mt-6
                   hover:z-30
-                  min-w-[280px] max-w-[320px] snap-center md:min-w-0 md:max-w-none flex-shrink-0 md:flex-shrink
+                  min-w-[260px] max-w-[300px] snap-center md:min-w-0 md:max-w-none flex-shrink-0 md:flex-shrink
                   ${tier.tag === 'Best Value' 
                     ? 'border-amber-200 shadow-xl shadow-amber-100/50 ring-2 ring-amber-200/50' 
                     : tier.tag === 'Most Popular' 
@@ -103,8 +110,8 @@ export default function Pricing() {
               >
                 {/* Popular Badge */}
                 {tier.tag && (
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg
+                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wide shadow-lg
                       ${tier.tag === 'Best Value' 
                         ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white' 
                         : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
@@ -116,32 +123,32 @@ export default function Pricing() {
                 )}
 
                 {/* Header */}
-                <div className="text-center mb-3 pt-3 md:pt-1">
-                  <h3 className="text-base md:text-lg font-bold text-slate-900 mb-1">{tier.label}</h3>
+                <div className="text-center mb-2 pt-2">
+                  <h3 className="text-[14px] md:text-[15px] font-bold text-slate-900 mb-1">{tier.label}</h3>
                   <div className="flex items-baseline justify-center mb-0.5">
-                    <span className="text-2xl md:text-3xl font-black bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                    <span className="text-xl md:text-2xl font-black bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent">
                       ${tier.price}
                     </span>
                   </div>
-                  <p className="text-slate-500 text-[11px] md:text-xs">per person</p>
+                  <p className="text-slate-500 text-[10px]">per person</p>
                 </div>
 
                 {/* Features */}
-                <div className="flex-grow mb-3">
-                  <ul className="space-y-1 md:space-y-2">
+                <div className="flex-grow mb-2">
+                  <ul className="space-y-1">
                     {tier.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <div className={`flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5
+                      <li key={feature} className="flex items-start gap-2">
+                        <div className={`flex-shrink-0 w-3 h-3 rounded-full flex items-center justify-center mt-0.5
                           ${tier.tag === 'Best Value' 
                             ? 'bg-amber-100 text-amber-600' 
                             : 'bg-blue-100 text-blue-600'
                           }`}
                         >
-                          <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         </div>
-                        <span className="text-slate-700 text-xs md:text-sm font-medium leading-relaxed">{feature}</span>
+                        <span className="text-slate-700 text-[11px] md:text-[12px] font-medium leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -149,8 +156,23 @@ export default function Pricing() {
 
                 {/* CTA Button */}
                 <a
-                  href="#booking"
-                  className={`w-full text-center font-bold py-2 rounded-lg md:py-2.5 md:rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-xs md:text-sm
+                  href={`https://fareharbor.com/embeds/book/jordanellerentals/items/${tier.label === '1 Hour' ? '638158' : tier.label === '2 Hours' ? '638160' : '638161'}/?full-items=yes&flow=1442956`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    if (window.FH) {
+                      window.FH.open({ 
+                        shortname: 'jordanellerentals', 
+                        fallback: 'simple', 
+                        fullItems: 'yes', 
+                        flow: 1442956, 
+                        view: { item: tier.label === '1 Hour' ? 638158 : tier.label === '2 Hours' ? 638160 : 638161 } 
+                      })
+                    } else {
+                      // Fallback to direct link if FH is not loaded
+                      window.open(e.currentTarget.href, '_blank')
+                    }
+                  }}
+                  className={`w-full text-center font-bold py-1.5 rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl text-[11px] md:text-[12px]
                     ${tier.tag === 'Best Value'
                       ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 shadow-amber-200'
                       : tier.tag === 'Most Popular'
@@ -159,9 +181,9 @@ export default function Pricing() {
                     }
                   `}
                 >
-                  <span className="flex items-center justify-center gap-2">
+                  <span className="flex items-center justify-center gap-1.5">
                     Book {tier.label}
-                    <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </span>
@@ -173,13 +195,10 @@ export default function Pricing() {
         </div>
 
         {/* Bottom text */}
-        <div className="text-center mt-6 md:mt-12 space-y-2 md:space-y-3">
-          <p className="text-slate-500">
+        <div className="text-center mt-4 md:mt-8 space-y-1 md:space-y-2">
+          <p className="text-slate-500 text-[12px] md:text-[13px]">
             All prices are per person. Group discounts available for 10+ people.
           </p>
-          {/* <p className="text-blue-700 text-base max-w-2xl mx-auto font-medium">
-            The park is a blast for all ages, but it’s a real workout! Most adults and even athletic kids will need breaks after an hour. Two hours is perfect for maximum fun (and a great night’s sleep for the kids!).
-          </p> */}
         </div>
       </div>
     </section>
