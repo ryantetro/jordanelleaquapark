@@ -1,4 +1,6 @@
 import logo from '../assets/logo.png'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 
 // Declare FareHarbor types
 declare global {
@@ -15,7 +17,44 @@ declare global {
   }
 }
 
+// Smooth scroll function
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    })
+  }
+}
+
 export function Footer() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Listen for hash or query param to scroll after navigation
+  useEffect(() => {
+    if (location.hash) {
+      const section = location.hash.replace('#', '')
+      setTimeout(() => scrollToSection(section), 100)
+    } else if (location.search) {
+      const params = new URLSearchParams(location.search)
+      const scroll = params.get('scroll')
+      if (scroll) setTimeout(() => scrollToSection(scroll), 100)
+    }
+  }, [location])
+
+  // Handler for anchor links
+  const handleAnchorClick = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      scrollToSection(sectionId)
+    } else {
+      // Navigate to home page with hash
+      navigate(`/#${sectionId}`)
+    }
+  }
+
   return (
     <footer className="w-full bg-[#1B4F8C] text-white pt-8 pb-4 mt-8 overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start max-w-full">
@@ -59,9 +98,10 @@ export function Footer() {
           >
             Book Now
           </a>
-          <a href="/FAQ" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">FAQ</a>
-          <a href="#about" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">About</a>
-          <a href="/contact" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">Contact</a>
+          <Link to="/FAQ" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">FAQ</Link>
+          <a href="#about" onClick={handleAnchorClick('about')} className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">About</a>
+          <Link to="/contact" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">Contact</Link>
+          <a href="#pricing" onClick={handleAnchorClick('pricing')} className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">Pricing</a>
         </div>
         {/* Right: Call to Action */}
         <div className="flex flex-col gap-3 bg-white rounded-xl p-4 shadow-xl border border-[#6B5432]/20 max-w-full">
