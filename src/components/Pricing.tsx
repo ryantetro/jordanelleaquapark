@@ -90,38 +90,40 @@ export default function Pricing() {
         </div>
 
         {/* Pricing Cards */}
-        <div ref={scrollContainerRef} className="flex md:grid md:grid-cols-3 gap-x-3 md:gap-x-4 px-4 md:px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory max-w-full mx-auto scroll-smooth">
+        <div ref={scrollContainerRef} className="flex md:grid md:grid-cols-3 gap-x-3 md:gap-x-4 px-4 md:px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory max-w-full mx-auto scroll-smooth overflow-y-visible">
           {/* Mobile centering: Add padding to center the middle card */}
-          <div className="flex md:contents gap-x-3 md:gap-x-4">
+          <div className="flex md:contents gap-x-3 md:gap-x-4 overflow-y-visible">
             <div className="md:hidden w-[calc(50vw-140px)] flex-shrink-0"></div>
             {PRICING.map((tier) => (
               <div
                 key={tier.label}
-                className={`relative bg-white/80 backdrop-blur-sm border rounded-xl p-3 flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-2xl group mt-6
+                className={`relative bg-white/80 backdrop-blur-sm border rounded-xl p-3 flex flex-col transition-all duration-300
+                  md:hover:scale-105 md:hover:shadow-2xl group mt-6
                   hover:z-30
                   min-w-[260px] max-w-[300px] snap-center md:min-w-0 md:max-w-none flex-shrink-0 md:flex-shrink
                   ${tier.tag === 'Best Value' 
                     ? 'border-amber-200 shadow-xl shadow-amber-100/50 ring-2 ring-amber-200/50' 
                     : tier.tag === 'Most Popular' 
                     ? 'border-blue-200 shadow-lg shadow-blue-100/50 ring-1 ring-blue-200/30' 
-                    : 'border-slate-200 shadow-md hover:border-blue-200'
+                    : 'border-slate-200 shadow-md md:hover:border-blue-200'
                   }
-                `}
+                  active:scale-95 active:shadow-xl
+                overflow-y-visible`}
+                style={{ overflowY: 'visible' }}
               >
                 {/* Popular Badge */}
                 {tier.tag && (
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
-                    <div className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-wide shadow-lg
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                    <div className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide shadow-lg whitespace-nowrap
                       ${tier.tag === 'Best Value' 
                         ? 'bg-gradient-to-r from-amber-400 to-orange-400 text-white' 
                         : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
-                      }`}
-                    >
+                      }`
+                    }>
                       {tier.tag}
                     </div>
                   </div>
                 )}
-
                 {/* Header */}
                 <div className="text-center mb-2 pt-2">
                   <h3 className="text-[14px] md:text-[15px] font-bold text-slate-900 mb-1">{tier.label}</h3>
@@ -132,7 +134,6 @@ export default function Pricing() {
                   </div>
                   <p className="text-slate-500 text-[10px]">per person</p>
                 </div>
-
                 {/* Features */}
                 <div className="flex-grow mb-2">
                   <ul className="space-y-1">
@@ -142,8 +143,8 @@ export default function Pricing() {
                           ${tier.tag === 'Best Value' 
                             ? 'bg-amber-100 text-amber-600' 
                             : 'bg-blue-100 text-blue-600'
-                          }`}
-                        >
+                          }`
+                        }>
                           <svg className="w-2 h-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
@@ -153,7 +154,6 @@ export default function Pricing() {
                     ))}
                   </ul>
                 </div>
-
                 {/* CTA Button */}
                 <a
                   href={`https://fareharbor.com/embeds/book/jordanellerentals/items/${tier.label === '1 Hour' ? '638158' : tier.label === '2 Hours' ? '638160' : '638161'}/?full-items=yes&flow=1442956`}
