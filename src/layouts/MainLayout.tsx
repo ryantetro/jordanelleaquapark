@@ -12,7 +12,7 @@ interface MainLayoutProps {
 
 export function MainLayout({ children, headerClassName }: MainLayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen bg-primary-light">
+    <div className="flex flex-col min-h-screen bg-primary-light overflow-x-hidden">
       <Header className={headerClassName} />
       <main className="flex-1 w-full">
         {children}

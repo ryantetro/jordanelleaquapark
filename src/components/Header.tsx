@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.png'
 
 // Declare FareHarbor types
@@ -34,7 +34,6 @@ const scrollToSection = (sectionId: string) => {
 
 const navLinks = [
   { name: 'Home', to: '/', isAnchor: false },
-  // { name: 'About', to: 'about', isAnchor: true },
   { name: 'How to Book', to: 'booking', isAnchor: true },
   { name: 'Pricing', to: 'pricing', isAnchor: true },
   { name: 'FAQ', to: '/FAQ', isAnchor: false },
@@ -48,6 +47,20 @@ export function Header({ className }: HeaderProps = {}) {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isCompact, setIsCompact] = useState(false)
   const [isOnLightBackground, setIsOnLightBackground] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Listen for hash or query param to scroll after navigation
+  useEffect(() => {
+    if (location.hash) {
+      const section = location.hash.replace('#', '')
+      setTimeout(() => scrollToSection(section), 100)
+    } else if (location.search) {
+      const params = new URLSearchParams(location.search)
+      const scroll = params.get('scroll')
+      if (scroll) setTimeout(() => scrollToSection(scroll), 100)
+    }
+  }, [location])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -130,6 +143,20 @@ export function Header({ className }: HeaderProps = {}) {
   }`
   const mergedClassName = `${baseHeaderClasses} ${className ? className : getTextColor()}`
 
+  // Handler for nav links
+  const handleNavClick = (link: typeof navLinks[0]) => (e: any) => {
+    if (link.isAnchor) {
+      e.preventDefault()
+      if (location.pathname === '/') {
+        scrollToSection(link.to)
+      } else {
+        // Use hash for scrolling after navigation
+        navigate(`/#${link.to}`)
+      }
+      closeMenu()
+    }
+  }
+
   return (
     <header className={mergedClassName}>
       <div className={`max-w-7xl mx-auto flex items-center justify-between px-6 transition-all duration-300 ${
@@ -145,9 +172,8 @@ export function Header({ className }: HeaderProps = {}) {
           />
           <span className={`font-bold text-brand-gold tracking-wide drop-shadow-lg transition-all duration-300 ${
             isCompact ? 'text-base md:text-xl' : 'text-lg md:text-xl'
-          }`}>
-            <span className={isCompact ? 'hidden sm:inline' : ''}>Jordanelle Aqua Park</span>
-            <span className={isCompact ? 'sm:hidden' : 'hidden'}>Jordanelle</span>
+          } md:inline hidden`}>
+            Jordanelle Aqua Park
           </span>
         </Link>
         {/* Desktop Nav */}
@@ -156,13 +182,8 @@ export function Header({ className }: HeaderProps = {}) {
             {navLinks.map((link) => (
               <li key={link.name}>
                 <Link
-                  to={link.to}
-                  onClick={(e) => {
-                    if (link.isAnchor) {
-                      e.preventDefault()
-                      scrollToSection(link.to)
-                    }
-                  }}
+                  to={link.isAnchor ? '/' : link.to}
+                  onClick={handleNavClick(link)}
                   className={`${getTextColor()} font-semibold hover:text-brand-gold transition-colors duration-150 px-3 py-2 rounded-lg drop-shadow-lg text-[14px] hover:bg-white/10`}
                 >
                   {link.name}
@@ -239,14 +260,8 @@ export function Header({ className }: HeaderProps = {}) {
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link
-                      to={link.to}
-                      onClick={(e) => {
-                        if (link.isAnchor) {
-                          e.preventDefault()
-                          scrollToSection(link.to)
-                        }
-                        closeMenu()
-                      }}
+                      to={link.isAnchor ? '/' : link.to}
+                      onClick={handleNavClick(link)}
                       className="text-xl text-brand-blue font-semibold hover:text-brand-gold transition-colors duration-150 py-3 block rounded-xl hover:bg-brand-gold/10"
                     >
                       {link.name}

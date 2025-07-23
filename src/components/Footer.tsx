@@ -17,12 +17,12 @@ declare global {
 
 export function Footer() {
   return (
-    <footer className="w-full bg-[#181C1B] text-white pt-8 pb-4 mt-8">
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+    <footer className="w-full bg-[#181C1B] text-white pt-8 pb-4 mt-8 overflow-x-hidden">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start max-w-full">
         {/* Left: Logo & Location */}
-        <div className="flex flex-col items-start gap-4">
+        <div className="flex flex-col items-start gap-4 max-w-full">
           <img src={logo} alt="Jordanelle Aqua Park Logo" className="h-16 w-auto mb-1 drop-shadow-lg" />
-          <div>
+          <div className="max-w-full">
             <div className="font-poppins font-bold text-base text-[#F7C873] mb-1">Jordanelle Aqua Park</div>
             <div className="text-white/90 text-sm leading-relaxed">
               Hailstone Recreation Area – Jordanelle State Park<br />
@@ -36,7 +36,7 @@ export function Footer() {
           </div>
         </div>
         {/* Center: Quick Links */}
-        <div className="flex flex-col gap-3 md:items-center">
+        <div className="flex flex-col gap-3 md:items-center max-w-full">
           <div className="font-poppins font-bold text-base text-[#F7C873] mb-1">Quick Links</div>
           <a 
             href="https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956"
@@ -64,7 +64,7 @@ export function Footer() {
           <a href="/contact" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">Contact</a>
         </div>
         {/* Right: Call to Action */}
-        <div className="flex flex-col gap-3 bg-[#232A2B] rounded-xl p-4 shadow-xl border border-[#6B5432]/30">
+        <div className="flex flex-col gap-3 bg-[#232A2B] rounded-xl p-4 shadow-xl border border-[#6B5432]/30 max-w-full">
           <div className="font-poppins font-bold text-base text-[#F7C873] mb-1">Ready to Book?</div>
           <p className="text-white/80 text-xs leading-relaxed mb-3">
             Secure your spot for the ultimate water park experience. Book online or contact us directly.
@@ -105,10 +105,9 @@ export function Footer() {
         </div>
       </div>
       {/* Bottom legal strip */}
-      <div className="mt-6 pt-4 flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto px-6 text-[#6CA6D9] text-xs relative">
+      <div className="mt-6 pt-4 flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto px-6 text-[#6CA6D9] text-xs relative max-w-full overflow-x-hidden">
         {/* Modern separator line */}
-        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-        
+        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent max-w-full" />
         <div className="mb-2 md:mb-0">© {new Date().getFullYear()} Jordanelle Aqua Park. All rights reserved.</div>
         <div className="flex gap-4">
           <a href="#privacy" className="hover:underline hover:text-[#F7C873] transition-all">Privacy Policy</a>
