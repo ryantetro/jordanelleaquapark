@@ -18,7 +18,7 @@ declare global {
 
 export function Hero() {
   return (
-    <section className="relative h-screen w-full flex items-end justify-center pb-8 md:pb-12">
+    <section className="relative h-[80vh] md:h-screen w-full flex items-end justify-center pb-8 md:pb-12">
       <img
         src={overview}
         alt="Kids playing at Jordanelle Aqua Park"

@@ -20,14 +20,14 @@ const FamilyIcon = () => (
     </svg>
   </span>
 )
-const LifeguardIcon = () => (
-  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FFE0E0]">
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-[#FF6B6B]" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="12" r="9" stroke="#FF6B6B" strokeWidth="1.5" />
-      <path d="M12 7v10M7 12h10" stroke="#FF6B6B" strokeWidth="1.5" />
-    </svg>
-  </span>
-)
+// const LifeguardIcon = () => (
+//   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FFE0E0]">
+//     <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-[#FF6B6B]" stroke="currentColor" strokeWidth="1.5">
+//       <circle cx="12" cy="12" r="9" stroke="#FF6B6B" strokeWidth="1.5" />
+//       <path d="M12 7v10M7 12h10" stroke="#FF6B6B" strokeWidth="1.5" />
+//     </svg>
+//   </span>
+// )
 const SunIcon = () => (
   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#FFF9E0]">
     <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-[#FFD600]" stroke="currentColor" strokeWidth="1.5">
@@ -93,7 +93,7 @@ export function WhyAquaPark() {
             </span>
           </h3>
           <p className="font-open-sans text-[#4A5568] text-[14px] md:text-[16px] leading-relaxed mb-4" style={{lineHeight:1.8}}>
-            It's not just a float—it's a floating water playground. With slides, trampolines, climbing towers, monkey bars, balance beams, and launch pads, Jordanelle Aqua Park brings out the fun in everyone.
+            It's not just a float—it's a floating water playground. With giant inflatable slides, trampolines, climbing walls, balance beams, and launch pads, Jordanelle Aqua Park brings out the fun in everyone.
           </p>
           {/* Benefits List */}
           <ul className="space-y-3 mb-6 w-full">
@@ -101,10 +101,10 @@ export function WhyAquaPark() {
               <FamilyIcon />
               <span className="font-open-sans text-[#013A63] text-[14px] group-hover:text-[#00C896] group-hover:scale-105 transition-all duration-200">Fun for all ages</span>
             </li>
-            <li className="flex items-center gap-2 group cursor-pointer transition-transform duration-200 hover:scale-105 justify-center md:justify-start">
+            {/* <li className="flex items-center gap-2 group cursor-pointer transition-transform duration-200 hover:scale-105 justify-center md:justify-start">
               <LifeguardIcon />
               <span className="font-open-sans text-[#013A63] text-[14px] group-hover:text-[#FF6B6B] group-hover:scale-105 transition-all duration-200">Safe and lifeguard-supervised</span>
-            </li>
+            </li> */}
             <li className="flex items-center gap-2 group cursor-pointer transition-transform duration-200 hover:scale-105 justify-center md:justify-start">
               <SunIcon />
               <span className="font-open-sans text-[#013A63] text-[14px] group-hover:text-[#FFD600] group-hover:scale-105 transition-all duration-200">No screens, just sunshine</span>
