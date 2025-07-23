@@ -17,7 +17,7 @@ declare global {
 
 export function Footer() {
   return (
-    <footer className="w-full bg-[#181C1B] text-white pt-8 pb-4 mt-8 overflow-x-hidden">
+    <footer className="w-full bg-[#1B4F8C] text-white pt-8 pb-4 mt-8 overflow-x-hidden">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start max-w-full">
         {/* Left: Logo & Location */}
         <div className="flex flex-col items-start gap-4 max-w-full">
@@ -64,9 +64,9 @@ export function Footer() {
           <a href="/contact" className="text-white/90 hover:text-[#F7C873] font-medium transition-colors py-0.5 text-sm">Contact</a>
         </div>
         {/* Right: Call to Action */}
-        <div className="flex flex-col gap-3 bg-[#232A2B] rounded-xl p-4 shadow-xl border border-[#6B5432]/30 max-w-full">
-          <div className="font-poppins font-bold text-base text-[#F7C873] mb-1">Ready to Book?</div>
-          <p className="text-white/80 text-xs leading-relaxed mb-3">
+        <div className="flex flex-col gap-3 bg-white rounded-xl p-4 shadow-xl border border-[#6B5432]/20 max-w-full">
+          <div className="font-poppins font-bold text-base text-[#1B4F8C] mb-1">Ready to Book?</div>
+          <p className="text-[#1B4F8C]/80 text-xs leading-relaxed mb-3">
             Secure your spot for the ultimate water park experience. Book online or contact us directly.
           </p>
           <button
@@ -84,11 +84,11 @@ export function Footer() {
                 window.open('https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956', '_blank')
               }
             }}
-            className="bg-[#F7C873] hover:bg-[#3A6BAA] text-[#232A2B] hover:text-[#F7C873] font-bold rounded-lg py-2 px-3 text-sm transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#F7C873] focus:ring-offset-2"
+            className="bg-[#F7C873] hover:bg-[#3A6BAA] text-[#1B4F8C] hover:text-[#F7C873] font-bold rounded-lg py-2 px-3 text-sm transition-all duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#F7C873] focus:ring-offset-2"
           >
             Book Now
           </button>
-          <div className="text-xs text-[#6CA6D9] mt-1">
+          <div className="text-xs text-[#3A6BAA] mt-1">
             <div className="flex items-center gap-1 mb-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />

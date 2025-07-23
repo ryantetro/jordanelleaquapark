@@ -135,10 +135,9 @@ export function HowToBook() {
               window.open('https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956', '_blank')
             }
           }}
-          className="relative overflow-hidden bg-[#0179D0] hover:bg-[#00C896] text-white font-bold px-6 py-3 rounded-xl shadow-xl text-[16px] transition-all duration-300 group focus:outline-none focus:ring-4 focus:ring-[#40B8FF]/40 focus:ring-offset-2 hover:scale-105 hover:shadow-[0_0_24px_4px_rgba(0,200,150,0.25)]"
+          className="relative overflow-hidden bg-[#3A6BAA] text-[#F7C873] font-semibold px-4 py-2 rounded-lg shadow-sm text-sm hover:bg-[#F7C873] hover:text-[#3A6BAA] transition-all duration-300 inline-flex items-center gap-1 group focus:outline-none focus:ring-4 focus:ring-[#40B8FF]/40 focus:ring-offset-2"
         >
           <span className="relative z-10">RESERVE NOW</span>
-          <span className="absolute inset-0 pointer-events-none group-hover:animate-ripple-glow" />
         </button>
         <style>{`
           @keyframes ripple-glow {

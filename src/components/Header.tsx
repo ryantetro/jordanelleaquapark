@@ -40,6 +40,8 @@ const navLinks = [
   { name: 'Contact', to: '/contact', isAnchor: false },
 ]
 
+const JORDANELLE_BLUE = '#1B4F8C'
+
 export function Header({ className }: HeaderProps = {}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
@@ -47,6 +49,7 @@ export function Header({ className }: HeaderProps = {}) {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isCompact, setIsCompact] = useState(false)
   const [isOnLightBackground, setIsOnLightBackground] = useState(false)
+  const [isHero, setIsHero] = useState(true)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -113,6 +116,14 @@ export function Header({ className }: HeaderProps = {}) {
     return () => window.removeEventListener('popstate', handleRouteChange)
   }, [])
 
+  useEffect(() => {
+    const onScroll = () => {
+      setIsHero(window.scrollY < 80)
+    }
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const closeMenu = () => {
     setIsAnimatingOut(true)
     setTimeout(() => {
@@ -131,10 +142,13 @@ export function Header({ className }: HeaderProps = {}) {
 
   // Dynamic background based on page
   const getBackground = () => {
-    if (isOnLightBackground) {
-      return 'backdrop-blur-sm bg-white/80' // Light background for light pages
+    if (isHero) {
+      return 'bg-transparent'
     }
-    return 'backdrop-blur-md bg-black/20' // Dark background for dark pages
+    if (isOnLightBackground) {
+      return 'backdrop-blur-sm bg-white/80'
+    }
+    return `backdrop-blur-md bg-[${JORDANELLE_BLUE}]/95`
   }
 
   // Always keep animation/visibility classes, but allow FAQ to override bg/text/shadow
@@ -170,9 +184,9 @@ export function Header({ className }: HeaderProps = {}) {
               isCompact ? 'h-10 w-10 md:h-12 md:w-12' : 'h-14 w-14 md:h-12 md:w-12'
             }`}
           />
-          <span className={`font-bold text-brand-gold tracking-wide drop-shadow-lg transition-all duration-300 ${
+          <span className={`font-bold transition-all duration-300 ${
             isCompact ? 'text-base md:text-xl' : 'text-lg md:text-xl'
-          } md:inline hidden`}>
+          } md:inline hidden text-[#F7C873]`}>
             Jordanelle Aqua Park
           </span>
         </Link>
@@ -209,9 +223,7 @@ export function Header({ className }: HeaderProps = {}) {
               window.open(e.currentTarget.href, '_blank')
             }
           }}
-          className={`ml-4 bg-brand-gold text-brand-blue font-bold rounded-lg shadow-lg hover:bg-brand-blue hover:text-brand-gold border-2 border-brand-gold transition-all duration-300 hidden md:inline-block drop-shadow-lg ${
-            isCompact ? 'px-2 py-1 text-xs' : 'px-4 py-2 text-sm'
-          }`}
+          className={`ml-4 bg-[#F7C873] text-[#1B4F8C] font-semibold px-4 py-2 rounded-lg shadow-sm text-sm hover:bg-[#3A6BAA] hover:text-[#F7C873] transition-all duration-300 inline-flex items-center gap-1 hidden md:inline-block drop-shadow-lg`}
         >
           Book Now
         </Link>

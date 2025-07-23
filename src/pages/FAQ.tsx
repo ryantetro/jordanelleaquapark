@@ -224,7 +224,7 @@ export default function FAQPage() {
         
         {/* CTA Section */}
         <section className="w-full max-w-lg mx-auto mt-6 text-center">
-          <div className="bg-[#181C1B] rounded-xl p-4 md:p-5 shadow-lg border border-[#6B5432]/30">
+          <div className="bg-[#1B4F8C] rounded-xl p-4 md:p-5 shadow-lg border border-[#6B5432]/30">
             <h2 className="font-poppins font-semibold text-[14px] md:text-[16px] text-white mb-2">
               Ready to Book?
             </h2>
@@ -246,7 +246,7 @@ export default function FAQPage() {
                   window.open('https://fareharbor.com/embeds/book/jordanellerentals/items/638160/?full-items=yes&flow=1442956', '_blank')
                 }
               }}
-              className="bg-[#F7C873] text-[#181C1B] font-semibold px-4 py-2 rounded-lg shadow-sm text-sm hover:bg-[#3A6BAA] hover:text-[#F7C873] transition-all duration-300 inline-flex items-center gap-1"
+              className="bg-[#F7C873] text-[#1B4F8C] font-semibold px-4 py-2 rounded-lg shadow-sm text-sm hover:bg-[#3A6BAA] hover:text-[#F7C873] transition-all duration-300 inline-flex items-center gap-1"
             >
               Book Now
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
